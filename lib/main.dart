@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 
@@ -104,11 +106,46 @@ class RandomWordsState extends State<RandomWords> {
   final Set<WordPair> _saved = Set<WordPair>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
+  void _pushSaved() {
+    Navigator.of(context)
+        .push(MaterialPageRoute<Void>(builder: (BuildContext context) {
+      final Iterable<ListTile> tiles = _saved.map(
+        (WordPair pair) {
+          return ListTile(
+            title: Text(
+              pair.asPascalCase,
+              style: _biggerFont,
+            ),
+          );
+        },
+      );
+      final List<Widget> divied = ListTile.divideTiles(
+        context: context,
+        tiles: tiles,
+      ).toList();
+
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Saved Suggestions'),
+        ),
+        body: ListView(
+          children: divied,
+        ),
+      );
+    }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Startup Name Generator'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.list),
+            onPressed: _pushSaved,
+          )
+        ],
       ),
       body: _buildSuggestions(),
     );
@@ -125,14 +162,14 @@ class RandomWordsState extends State<RandomWords> {
         alreadySabed ? Icons.favorite : Icons.favorite_border,
         color: alreadySabed ? Colors.red : null,
       ),
-      onTap: (){
+      onTap: () {
         setState(() {
-          if(alreadySabed) {
+          if (alreadySabed) {
             _saved.remove(pair);
-          }else{
+          } else {
             _saved.add(pair);
           }
-        });//setState
+        }); //setState
       },
     );
   }
