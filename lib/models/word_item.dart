@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
-
 class WordItem {
-  firnal String name;
+  final String name;
   const WordItem(this.name);
 
   @override
