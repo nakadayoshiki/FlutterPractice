@@ -4,8 +4,7 @@ class CountLabel extends StatefulWidget {
   final int favoriteCount;
 
   CountLabel({
-    Key
-    key,
+    Key key,
     @required this.favoriteCount,
   })  : assert(favoriteCount >= 0),
         super(key: key);
